@@ -1,0 +1,342 @@
+{
+  "version": "1.0",
+  "dataModel": {
+    "tables": [
+      {
+        "name": "DimDate",
+        "type": "Dimension",
+        "description": "Tabela de dimensão de datas",
+        "columns": [
+          {
+            "name": "DateKey",
+            "dataType": "Int64",
+            "isPrimary": true,
+            "description": "Chave de data (YYYYMMDD)"
+          },
+          {
+            "name": "Date",
+            "dataType": "DateTime",
+            "description": "Data completa"
+          },
+          {
+            "name": "Year",
+            "dataType": "Int64",
+            "description": "Ano"
+          },
+          {
+            "name": "Month",
+            "dataType": "Int64",
+            "description": "Mês (1-12)"
+          },
+          {
+            "name": "MonthName",
+            "dataType": "Text",
+            "description": "Nome do mês"
+          },
+          {
+            "name": "Quarter",
+            "dataType": "Text",
+            "description": "Trimestre (Q1-Q4)"
+          },
+          {
+            "name": "DayOfWeek",
+            "dataType": "Int64",
+            "description": "Dia da semana (1-7)"
+          },
+          {
+            "name": "DayName",
+            "dataType": "Text",
+            "description": "Nome do dia"
+          },
+          {
+            "name": "IsWeekend",
+            "dataType": "Boolean",
+            "description": "Indica se é fim de semana"
+          }
+        ]
+      },
+      {
+        "name": "DimDepartment",
+        "type": "Dimension",
+        "description": "Tabela de dimensão de departamentos",
+        "columns": [
+          {
+            "name": "DepartmentID",
+            "dataType": "Int64",
+            "isPrimary": true
+          },
+          {
+            "name": "Department",
+            "dataType": "Text",
+            "description": "Nome do departamento"
+          },
+          {
+            "name": "Manager",
+            "dataType": "Text",
+            "description": "Gerente do departamento"
+          },
+          {
+            "name": "CostCenter",
+            "dataType": "Text",
+            "description": "Centro de custo"
+          },
+          {
+            "name": "Division",
+            "dataType": "Text",
+            "description": "Divisão"
+          }
+        ]
+      },
+      {
+        "name": "DimExpenseCategory",
+        "type": "Dimension",
+        "description": "Tabela de dimensão de categorias de despesa",
+        "columns": [
+          {
+            "name": "CategoryID",
+            "dataType": "Int64",
+            "isPrimary": true
+          },
+          {
+            "name": "Category",
+            "dataType": "Text",
+            "description": "Categoria de despesa"
+          },
+          {
+            "name": "Subcategory",
+            "dataType": "Text",
+            "description": "Subcategoria"
+          },
+          {
+            "name": "ExpenseType",
+            "dataType": "Text",
+            "description": "Tipo de despesa (Fixed/Variable)"
+          }
+        ]
+      },
+      {
+        "name": "DimRevenueSource",
+        "type": "Dimension",
+        "description": "Tabela de dimensão de fontes de receita",
+        "columns": [
+          {
+            "name": "SourceID",
+            "dataType": "Int64",
+            "isPrimary": true
+          },
+          {
+            "name": "Source",
+            "dataType": "Text",
+            "description": "Fonte de receita"
+          },
+          {
+            "name": "Region",
+            "dataType": "Text",
+            "description": "Região"
+          },
+          {
+            "name": "Channel",
+            "dataType": "Text",
+            "description": "Canal de vendas"
+          }
+        ]
+      },
+      {
+        "name": "FactRevenue",
+        "type": "Fact",
+        "description": "Tabela de fatos de receita",
+        "columns": [
+          {
+            "name": "TransactionID",
+            "dataType": "Int64",
+            "isPrimary": true,
+            "description": "ID único da transação"
+          },
+          {
+            "name": "DateKey",
+            "dataType": "Int64",
+            "isForeignKey": true,
+            "referencesTable": "DimDate"
+          },
+          {
+            "name": "DepartmentID",
+            "dataType": "Int64",
+            "isForeignKey": true,
+            "referencesTable": "DimDepartment"
+          },
+          {
+            "name": "SourceID",
+            "dataType": "Int64",
+            "isForeignKey": true,
+            "referencesTable": "DimRevenueSource"
+          },
+          {
+            "name": "Amount",
+            "dataType": "Decimal",
+            "description": "Valor de receita"
+          },
+          {
+            "name": "Quantity",
+            "dataType": "Int64",
+            "description": "Quantidade"
+          },
+          {
+            "name": "UnitPrice",
+            "dataType": "Decimal",
+            "description": "Preço unitário"
+          }
+        ]
+      },
+      {
+        "name": "FactExpenses",
+        "type": "Fact",
+        "description": "Tabela de fatos de despesas",
+        "columns": [
+          {
+            "name": "ExpenseID",
+            "dataType": "Int64",
+            "isPrimary": true,
+            "description": "ID único de despesa"
+          },
+          {
+            "name": "DateKey",
+            "dataType": "Int64",
+            "isForeignKey": true,
+            "referencesTable": "DimDate"
+          },
+          {
+            "name": "DepartmentID",
+            "dataType": "Int64",
+            "isForeignKey": true,
+            "referencesTable": "DimDepartment"
+          },
+          {
+            "name": "CategoryID",
+            "dataType": "Int64",
+            "isForeignKey": true,
+            "referencesTable": "DimExpenseCategory"
+          },
+          {
+            "name": "Amount",
+            "dataType": "Decimal",
+            "description": "Valor de despesa"
+          },
+          {
+            "name": "Description",
+            "dataType": "Text",
+            "description": "Descrição da despesa"
+          }
+        ]
+      },
+      {
+        "name": "FactBudget",
+        "type": "Fact",
+        "description": "Tabela de fatos de orçamento",
+        "columns": [
+          {
+            "name": "BudgetID",
+            "dataType": "Int64",
+            "isPrimary": true
+          },
+          {
+            "name": "DateKey",
+            "dataType": "Int64",
+            "isForeignKey": true,
+            "referencesTable": "DimDate"
+          },
+          {
+            "name": "DepartmentID",
+            "dataType": "Int64",
+            "isForeignKey": true,
+            "referencesTable": "DimDepartment"
+          },
+          {
+            "name": "CategoryID",
+            "dataType": "Int64",
+            "isForeignKey": true,
+            "referencesTable": "DimExpenseCategory"
+          },
+          {
+            "name": "Amount",
+            "dataType": "Decimal",
+            "description": "Valor orçado"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "from": "FactRevenue",
+        "fromColumn": "DateKey",
+        "to": "DimDate",
+        "toColumn": "DateKey",
+        "type": "ManyToOne",
+        "active": true
+      },
+      {
+        "from": "FactRevenue",
+        "fromColumn": "DepartmentID",
+        "to": "DimDepartment",
+        "toColumn": "DepartmentID",
+        "type": "ManyToOne",
+        "active": true
+      },
+      {
+        "from": "FactRevenue",
+        "fromColumn": "SourceID",
+        "to": "DimRevenueSource",
+        "toColumn": "SourceID",
+        "type": "ManyToOne",
+        "active": true
+      },
+      {
+        "from": "FactExpenses",
+        "fromColumn": "DateKey",
+        "to": "DimDate",
+        "toColumn": "DateKey",
+        "type": "ManyToOne",
+        "active": true
+      },
+      {
+        "from": "FactExpenses",
+        "fromColumn": "DepartmentID",
+        "to": "DimDepartment",
+        "toColumn": "DepartmentID",
+        "type": "ManyToOne",
+        "active": true
+      },
+      {
+        "from": "FactExpenses",
+        "fromColumn": "CategoryID",
+        "to": "DimExpenseCategory",
+        "toColumn": "CategoryID",
+        "type": "ManyToOne",
+        "active": true
+      },
+      {
+        "from": "FactBudget",
+        "fromColumn": "DateKey",
+        "to": "DimDate",
+        "toColumn": "DateKey",
+        "type": "ManyToOne",
+        "active": true
+      },
+      {
+        "from": "FactBudget",
+        "fromColumn": "DepartmentID",
+        "to": "DimDepartment",
+        "toColumn": "DepartmentID",
+        "type": "ManyToOne",
+        "active": true
+      },
+      {
+        "from": "FactBudget",
+        "fromColumn": "CategoryID",
+        "to": "DimExpenseCategory",
+        "toColumn": "CategoryID",
+        "type": "ManyToOne",
+        "active": true
+      }
+    ]
+  }
+}

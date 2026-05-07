@@ -1,0 +1,152 @@
+// ====================================================================
+// MEDIDAS DE RECEITA
+// ====================================================================
+
+Total Revenue = SUMX(FactRevenue, FactRevenue[Amount])
+
+Revenue YTD = TOTALYTD([Total Revenue], DimDate[DateKey])
+
+Revenue MTD = TOTALMTD([Total Revenue], DimDate[DateKey])
+
+Revenue Prior Year = CALCULATE([Total Revenue], DATEADD(DimDate[DateKey], -1, YEAR))
+
+Revenue YoY Growth =
+    VAR PriorYearRevenue = [Revenue Prior Year]
+    RETURN
+        IF(PriorYearRevenue = 0, 0, ([Total Revenue] - PriorYearRevenue) / PriorYearRevenue)
+
+Revenue YoY Growth % = [Revenue YoY Growth] * 100
+
+Revenue by Department =
+    SUMIFS(FactRevenue[Amount],
+           DimDepartment[Department],
+           SELECTEDVALUE(DimDepartment[Department]))
+
+// ====================================================================
+// MEDIDAS DE DESPESAS
+// ====================================================================
+
+Total Expenses = SUMX(FactExpenses, FactExpenses[Amount])
+
+Expenses YTD = TOTALYTD([Total Expenses], DimDate[DateKey])
+
+Expenses MTD = TOTALMTD([Total Expenses], DimDate[DateKey])
+
+Expenses Prior Year = CALCULATE([Total Expenses], DATEADD(DimDate[DateKey], -1, YEAR))
+
+Expenses YoY Growth =
+    VAR PriorYearExpenses = [Expenses Prior Year]
+    RETURN
+        IF(PriorYearExpenses = 0, 0, ([Total Expenses] - PriorYearExpenses) / PriorYearExpenses)
+
+Expenses YoY Growth % = [Expenses YoY Growth] * 100
+
+Expenses vs Budget = [Total Expenses] - [Budget Amount]
+
+Expenses vs Budget % =
+    VAR Budget = [Budget Amount]
+    RETURN
+        IF(Budget = 0, 0, [Expenses vs Budget] / Budget)
+
+// ====================================================================
+// MEDIDAS DE LUCRO E MARGENS
+// ====================================================================
+
+Net Profit = [Total Revenue] - [Total Expenses]
+
+Gross Profit = [Total Revenue] - [Cost of Goods Sold]
+
+Net Profit Margin =
+    VAR Revenue = [Total Revenue]
+    RETURN
+        IF(Revenue = 0, 0, [Net Profit] / Revenue)
+
+Net Profit Margin % = [Net Profit Margin] * 100
+
+Gross Profit Margin =
+    VAR Revenue = [Total Revenue]
+    RETURN
+        IF(Revenue = 0, 0, [Gross Profit] / Revenue)
+
+Gross Profit Margin % = [Gross Profit Margin] * 100
+
+EBITDA = [Net Profit] + [Depreciation] + [Interest] + [Taxes]
+
+ROI =
+    VAR Profit = [Net Profit]
+    VAR Investment = [Total Investment]
+    RETURN
+        IF(Investment = 0, 0, Profit / Investment)
+
+ROI % = [ROI] * 100
+
+// ====================================================================
+// MEDIDAS DE ANÁLISE COMPARATIVA
+// ====================================================================
+
+Prior Month Expenses =
+    CALCULATE([Total Expenses], DATEADD(DimDate[DateKey], -1, MONTH))
+
+Prior Month Revenue =
+    CALCULATE([Total Revenue], DATEADD(DimDate[DateKey], -1, MONTH))
+
+MoM Growth Revenue =
+    VAR PriorMonth = [Prior Month Revenue]
+    RETURN
+        IF(PriorMonth = 0, 0, ([Total Revenue] - PriorMonth) / PriorMonth)
+
+MoM Growth Revenue % = [MoM Growth Revenue] * 100
+
+MoM Growth Expenses =
+    VAR PriorMonth = [Prior Month Expenses]
+    RETURN
+        IF(PriorMonth = 0, 0, ([Total Expenses] - PriorMonth) / PriorMonth)
+
+MoM Growth Expenses % = [MoM Growth Expenses] * 100
+
+// ====================================================================
+// MEDIDAS AUXILIARES
+// ====================================================================
+
+Budget Amount = SUMX(FactBudget, FactBudget[Amount])
+
+Cost of Goods Sold = SUMX(FactCOGS, FactCOGS[Amount])
+
+Depreciation = SUMX(FactDepreciation, FactDepreciation[Amount])
+
+Interest = SUMX(FactInterest, FactInterest[Amount])
+
+Taxes = SUMX(FactTaxes, FactTaxes[Amount])
+
+Total Investment = SUMX(FactInvestment, FactInvestment[Amount])
+
+Record Count = COUNTA(FactRevenue[TransactionID])
+
+Distinct Departments = DISTINCTCOUNT(DimDepartment[DepartmentID])
+
+Distinct Expense Categories = DISTINCTCOUNT(DimExpenseCategory[CategoryID])
+
+Average Transaction Amount = AVERAGE(FactRevenue[Amount])
+
+// ====================================================================
+// MEDIDAS DE STATUS/INDICADORES
+// ====================================================================
+
+Budget Status =
+    VAR Variance = [Expenses vs Budget %]
+    RETURN
+        IF(Variance > 0.1, "Over Budget",
+           IF(Variance < -0.1, "Under Budget", "On Target"))
+
+Revenue Status =
+    VAR Growth = [Revenue YoY Growth]
+    RETURN
+        IF(Growth > 0.05, "Growing",
+           IF(Growth < -0.05, "Declining", "Stable"))
+
+Profit Status =
+    VAR Margin = [Net Profit Margin]
+    RETURN
+        IF(Margin > 0.2, "Excellent",
+           IF(Margin > 0.1, "Good",
+              IF(Margin > 0, "Fair", "Negative")))

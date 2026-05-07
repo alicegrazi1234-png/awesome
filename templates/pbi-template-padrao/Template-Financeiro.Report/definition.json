@@ -1,0 +1,238 @@
+{
+  "version": "1.0",
+  "name": "Template-Financeiro",
+  "description": "Relatório template com estrutura padrão de análises financeiras",
+  "pages": [
+    {
+      "name": "00-Dashboard-Executivo",
+      "displayName": "Dashboard Executivo",
+      "description": "Visão geral com KPIs principais e indicadores financeiros",
+      "order": 0,
+      "filters": [
+        {
+          "name": "Período",
+          "type": "Date",
+          "dataType": "DateTime"
+        },
+        {
+          "name": "Departamento",
+          "type": "Dropdown",
+          "dataType": "Text"
+        },
+        {
+          "name": "Centro de Custo",
+          "type": "Dropdown",
+          "dataType": "Text"
+        }
+      ],
+      "visualizations": [
+        {
+          "id": "kpi-revenue",
+          "title": "Receita Total",
+          "type": "KPI",
+          "position": { "x": 0, "y": 0, "width": 2, "height": 2 },
+          "measure": "Total Revenue"
+        },
+        {
+          "id": "kpi-expenses",
+          "title": "Despesas Totais",
+          "type": "KPI",
+          "position": { "x": 2, "y": 0, "width": 2, "height": 2 },
+          "measure": "Total Expenses"
+        },
+        {
+          "id": "kpi-profit",
+          "title": "Lucro Líquido",
+          "type": "KPI",
+          "position": { "x": 4, "y": 0, "width": 2, "height": 2 },
+          "measure": "Net Profit"
+        },
+        {
+          "id": "chart-revenue-trend",
+          "title": "Evolução de Receita",
+          "type": "LineChart",
+          "position": { "x": 0, "y": 2, "width": 3, "height": 3 },
+          "xAxis": "Date",
+          "yAxis": "Total Revenue"
+        },
+        {
+          "id": "chart-expenses-breakdown",
+          "title": "Decomposição de Despesas",
+          "type": "DonutChart",
+          "position": { "x": 3, "y": 2, "width": 3, "height": 3 },
+          "category": "Expense Category",
+          "value": "Total Expenses"
+        },
+        {
+          "id": "table-summary",
+          "title": "Resumo Financeiro",
+          "type": "Table",
+          "position": { "x": 0, "y": 5, "width": 6, "height": 3 },
+          "columns": [
+            "Department",
+            "Total Revenue",
+            "Total Expenses",
+            "Net Profit",
+            "Profit Margin %"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "01-Detalhes-Receita",
+      "displayName": "Detalhes de Receita",
+      "description": "Análise detalhada de fontes de receita",
+      "order": 1,
+      "filters": [
+        {
+          "name": "Período",
+          "type": "Date",
+          "dataType": "DateTime"
+        },
+        {
+          "name": "Fonte de Receita",
+          "type": "Dropdown",
+          "dataType": "Text"
+        }
+      ],
+      "visualizations": [
+        {
+          "id": "chart-revenue-by-source",
+          "title": "Receita por Fonte",
+          "type": "BarChart",
+          "position": { "x": 0, "y": 0, "width": 3, "height": 3 },
+          "category": "Revenue Source",
+          "value": "Total Revenue"
+        },
+        {
+          "id": "chart-revenue-timeline",
+          "title": "Timeline de Receita",
+          "type": "LineChart",
+          "position": { "x": 3, "y": 0, "width": 3, "height": 3 },
+          "xAxis": "Date",
+          "yAxis": "Total Revenue"
+        },
+        {
+          "id": "table-detail-revenue",
+          "title": "Detalhes de Receita",
+          "type": "Table",
+          "position": { "x": 0, "y": 3, "width": 6, "height": 4 },
+          "columns": [
+            "Date",
+            "Revenue Source",
+            "Department",
+            "Amount",
+            "YoY Growth %"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02-Detalhes-Despesas",
+      "displayName": "Detalhes de Despesas",
+      "description": "Análise detalhada de despesas por categoria",
+      "order": 2,
+      "filters": [
+        {
+          "name": "Período",
+          "type": "Date",
+          "dataType": "DateTime"
+        },
+        {
+          "name": "Categoria de Despesa",
+          "type": "Dropdown",
+          "dataType": "Text"
+        }
+      ],
+      "visualizations": [
+        {
+          "id": "chart-expenses-by-category",
+          "title": "Despesas por Categoria",
+          "type": "BarChart",
+          "position": { "x": 0, "y": 0, "width": 3, "height": 3 },
+          "category": "Expense Category",
+          "value": "Total Expenses"
+        },
+        {
+          "id": "chart-budget-variance",
+          "title": "Variação vs Orçamento",
+          "type": "WaterfallChart",
+          "position": { "x": 3, "y": 0, "width": 3, "height": 3 }
+        },
+        {
+          "id": "table-detail-expenses",
+          "title": "Detalhes de Despesas",
+          "type": "Table",
+          "position": { "x": 0, "y": 3, "width": 6, "height": 4 },
+          "columns": [
+            "Date",
+            "Expense Category",
+            "Department",
+            "Amount",
+            "Budget",
+            "Variance"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03-Analises-Avancadas",
+      "displayName": "Análises Avançadas",
+      "description": "Análises comparativas, tendências e previsões",
+      "order": 3,
+      "filters": [
+        {
+          "name": "Período",
+          "type": "Date",
+          "dataType": "DateTime"
+        },
+        {
+          "name": "Tipo de Análise",
+          "type": "Dropdown",
+          "dataType": "Text"
+        }
+      ],
+      "visualizations": [
+        {
+          "id": "chart-yoy-comparison",
+          "title": "Comparação Ano a Ano",
+          "type": "BarChart",
+          "position": { "x": 0, "y": 0, "width": 3, "height": 3 }
+        },
+        {
+          "id": "chart-variance-analysis",
+          "title": "Análise de Variância",
+          "type": "ScatterChart",
+          "position": { "x": 3, "y": 0, "width": 3, "height": 3 }
+        },
+        {
+          "id": "matrix-analysis",
+          "title": "Matriz de Análise",
+          "type": "Matrix",
+          "position": { "x": 0, "y": 3, "width": 6, "height": 4 },
+          "rows": ["Department", "Expense Category"],
+          "columns": ["Period"],
+          "values": ["Total Revenue", "Total Expenses", "Profit Margin %"]
+        }
+      ]
+    }
+  ],
+  "colorScheme": {
+    "primary": "#0066CC",
+    "secondary": "#00B050",
+    "accent": "#FF6B6B",
+    "neutral": "#808080",
+    "warning": "#FFC000",
+    "success": "#00B050",
+    "error": "#FF0000"
+  },
+  "fonts": {
+    "title": "Segoe UI",
+    "body": "Segoe UI",
+    "size": {
+      "title": 18,
+      "subtitle": 14,
+      "body": 12
+    }
+  }
+}

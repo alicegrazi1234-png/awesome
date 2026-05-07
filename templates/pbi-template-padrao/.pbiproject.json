@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "artifacts": [
+    {
+      "report": {
+        "path": "Template-Financeiro.Report"
+      }
+    }
+  ],
+  "settings": {
+    "enableAutoRecovery": true
+  },
+  "metadata": {
+    "name": "Template Padrão PBI - Análises Financeiras",
+    "description": "Template reutilizável para criação de relatórios financeiros com estrutura de filtros, visuais padrão e medidas pré-configuradas",
+    "version": "1.0.0",
+    "author": "Alice Grazi",
+    "category": "Financial Analytics",
+    "created": "2026-05-07"
+  }
+}
