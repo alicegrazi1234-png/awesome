@@ -1,0 +1,15 @@
+- DialogComment:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      BorderColor: =RGBA(138, 136, 134, 1)
+      Default: =varComment
+      Font: =Font.'Segoe UI'
+      Height: =90
+      HintText: ="Add a comment (optional)"
+      Mode: =TextMode.MultiLine
+      OnChange: =Set(varComment, Self.Text)
+      Size: =14
+      Visible: =!IsBlank(varConfirm)
+      Width: =536
+      X: =(Parent.Width - 600) / 2 + 32
+      Y: =390
